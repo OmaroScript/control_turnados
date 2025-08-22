@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>CONTROL DE TURNADOS 2025 — Formulario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --gap: 12px;
+        --radius: 10px;
+        /* Paleta Bootstrap-like */
+        --bs-primary: #0d6efd;
+        --bs-success: #198754;
+        --bs-danger: #dc3545;
+        --bs-warning: #ffc107;
+        --bs-info: #0dcaf0;
+        --bs-secondary: #6c757d;
+        --bs-border: #dee2e6;
+        --bs-text: #212529;
+        --bs-light: #f8f9fa;
+      }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: #f6f7fb;
+        color: #222;
+        justify-items: center;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      p.desc {
+        margin: 0 0 20px;
+        color: #555;
+      }
+      form {
+        display: grid;
+        gap: var(--gap);
+        max-width: 1100px;
+        width: 100%;
+      }
+      fieldset {
+        border: 1px solid #d9dce5;
+        border-radius: var(--radius);
+        background: #fff;
+        padding: 16px;
+      }
+      legend {
+        font-weight: 700;
+        padding: 0 8px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: var(--gap);
+      }
+      .col-12 {
+        grid-column: span 12;
+      }
+      .col-6 {
+        grid-column: span 6;
+      }
+      .col-4 {
+        grid-column: span 4;
+      }
+      .col-3 {
+        grid-column: span 3;
+      }
+      .col-9 {
+        grid-column: span 9;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #333;
+      }
+      input[type="text"],
+      input[type="date"],
+      input[type="email"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #cfd3df;
+        background: #fff;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 90px;
+      }
+      .inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border: 1px solid #cfd3df;
+        border-radius: 999px;
+        background: #fafbff;
+      }
+      .hint {
+        font-size: 12px;
+        color: #666;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+      button {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #c1c7d6;
+        background: #1e90ff;
+        color: #fff;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #fff;
+        color: #1e2a3a;
+      }
+      .group {
+        margin-bottom: 8px;
+      }
+      .options {
+        display: flex;
+        gap: 8px;
+        padding-top: 2px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 32px;
+        max-width: 1100px;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      /* Usa la paleta en controles */
+      button {
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+        color: #fff;
+      }
+      button:hover {
+        filter: brightness(0.96);
+      }
+      button.secondary {
+        background: #fff;
+        color: var(--bs-text);
+        border-color: var(--bs-secondary);
+      }
+      fieldset {
+        border: 1px solid var(--bs-border);
+      }
+      .chip {
+        border: 1px solid var(--bs-border);
+        background: #fbfcff;
+      }
+
+      /* —— Toasts custom (sin Bootstrap) —— */
+      .toast-stack {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        display: grid;
+        gap: 8px;
+        z-index: 9999;
+      }
+      .toast {
+        min-width: 280px;
+        max-width: 420px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        color: #fff;
+        overflow: hidden;
+        animation: toast-in 0.18s ease-out both;
+        display: flex;
+        align-items: flex-start;
+      }
+      .toast__bar {
+        width: 6px;
+        flex: 0 0 6px;
+        opacity: 0.9;
+      }
+      .toast__body {
+        padding: 10px 12px;
+        line-height: 1.35;
+        flex: 1;
+        background: rgba(0, 0, 0, 0.06);
+        backdrop-filter: saturate(120%);
+      }
+      .toast__close {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        font-size: 18px;
+        line-height: 1;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .toast--success {
+        background: linear-gradient(135deg, #1e9a63, var(--bs-success));
+      }
+      .toast--danger {
+        background: linear-gradient(135deg, #e35d6a, var(--bs-danger));
+      }
+      .toast--warning {
+        background: linear-gradient(135deg, #ffd34d, var(--bs-warning));
+        color: #1f1f1f;
+      }
+      .toast--info {
+        background: linear-gradient(135deg, #30d5ff, var(--bs-info));
+      }
+      .toast--primary {
+        background: linear-gradient(135deg, #4aa3ff, var(--bs-primary));
+      }
+
+      .toast--success .toast__bar {
+        background: #0f6848;
+      }
+      .toast--danger .toast__bar {
+        background: #842029;
+      }
+      .toast--warning .toast__bar {
+        background: #997404;
+      }
+      .toast--info .toast__bar {
+        background: #087990;
+      }
+      .toast--primary .toast__bar {
+        background: #084298;
+      }
+
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes toast-out {
+        to {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+      }
+    </style>
+    <!-- Libs UMD con defer para asegurar orden de carga antes del módulo -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <div class="header">
+      <img src="logo.png" alt="Logo" width="55" />
+      <div>
+        <h1>CONTROL DE TURNADOS 2025</h1>
+        <p class="desc">
+          Formulario para captura ágil del formato institucional.
+        </p>
+      </div>
+      <img src="upiem.png" alt="UPIEM" width="70" />
+    </div>
+
+    <form>
+      <fieldset>
+        <legend>1) Datos del documento</legend>
+        <div class="grid">
+          <div class="col-6">
+            <label for="turnado">Turnado</label>
+            <input id="turnado" name="turnado" type="text" required />
+          </div>
+          <div class="col-3">
+            <label for="fecha_documento">Fecha del documento</label>
+            <input
+              id="fecha_documento"
+              name="fecha_documento"
+              type="date"
+              required
+            />
+          </div>
+          <div class="col-3">
+            <label for="fecha_recepcion">Fecha de recepción</label>
+            <input id="fecha_recepcion" name="fecha_recepcion" type="date" />
+          </div>
+          <div class="col-12">
+            <label for="referencia">Referencia</label>
+            <input id="referencia" name="referencia" type="text" />
+          </div>
+          <div class="col-4">
+            <label for="anexos">Anexos</label>
+            <input id="anexos" name="anexos" type="text" />
+          </div>
+          <div class="col-4">
+            <label for="clasificacion">Clasificación</label>
+            <input id="clasificacion" name="clasificacion" type="text" />
+          </div>
+          <div class="col-4">
+            <label for="parte_clasificada">Parte clasificada</label>
+            <input
+              id="parte_clasificada"
+              name="parte_clasificada"
+              type="text"
+            />
+          </div>
+          <div class="col-12">
+            <label for="fundamento_legal">Fundamento legal</label>
+            <textarea id="fundamento_legal" name="fundamento_legal"></textarea>
+          </div>
+          <div class="col-12">
+            <label for="area_dependencia">Área y/o Dependencia</label>
+            <input id="area_dependencia" name="area_dependencia" type="text" />
+          </div>
+          <div class="col-6">
+            <label for="enviado_por">Enviado por</label>
+            <input id="enviado_por" name="enviado_por" type="text" />
+          </div>
+          <div class="col-3">
+            <label>¿Se envía instrucción vía e-mail?</label>
+            <div class="options">
+              <label class="chip"
+                ><input type="radio" name="instruccion_email" value="si" />
+                Sí</label
+              >
+              <label class="chip"
+                ><input type="radio" name="instruccion_email" value="no" />
+                No</label
+              >
+            </div>
+          </div>
+          <div class="col-3">
+            <label for="se_turno_el_dia">Se turnó el día</label>
+            <input id="se_turno_el_dia" name="se_turno_el_dia" type="date" />
+          </div>
+          <div class="col-12">
+            <label for="comentarios">Comentarios u observaciones</label>
+            <textarea id="comentarios" name="comentarios"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2) Turnado a</legend>
+        <div class="group">
+          <strong>Dirección</strong>
+          <div class="inline">
+            <label class="chip"
+              ><input type="checkbox" name="turnado_direccion[]" value="CEGT" />
+              CEGT</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_direccion[]" value="UDI" />
+              UDI</label
+            >
+          </div>
+        </div>
+
+        <div class="group">
+          <strong>Subdirección Académica</strong>
+          <div class="inline">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="turnado_subacademica[]"
+                value="FB"
+              />
+              FB</label
+            >
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="turnado_subacademica[]"
+                value="DFP"
+              />
+              DFP</label
+            >
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="turnado_subacademica[]"
+                value="DF_SAC"
+              />
+              DF SAC</label
+            >
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="turnado_subacademica[]"
+                value="IE"
+              />
+              IE</label
+            >
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="turnado_subacademica[]"
+                value="UTECV"
+              />
+              UTECV</label
+            >
+          </div>
+        </div>
+
+        <div class="group">
+          <strong>Sección de Estudios de Posgrado</strong>
+          <div class="inline">
+            <label class="chip"
+              ><input type="checkbox" name="turnado_posgrado[]" value="DI" />
+              DI</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_posgrado[]" value="DP" />
+              DP</label
+            >
+          </div>
+        </div>
+
+        <div class="group">
+          <strong
+            >Subdirección de Servicios Educativos e Integración Social</strong
+          >
+          <div class="inline">
+            <label class="chip"
+              ><input type="checkbox" name="turnado_sseis[]" value="DGE" />
+              DGE</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_sseis[]" value="DEAE" />
+              DEAE</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_sseis[]" value="UPIS" />
+              UPIS</label
+            >
+          </div>
+        </div>
+
+        <div class="group">
+          <strong>Subdirección Administrativa</strong>
+          <div class="inline">
+            <label class="chip"
+              ><input type="checkbox" name="turnado_admin[]" value="DCH" />
+              DCH</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_admin[]" value="DRF" />
+              DRF</label
+            >
+            <label class="chip"
+              ><input type="checkbox" name="turnado_admin[]" value="DRMS" />
+              DRMS</label
+            >
+          </div>
+        </div>
+
+        <div class="group inline">
+          <label class="chip"
+            ><input type="checkbox" name="apoyo_direccion" value="si" /> Apoyo
+            Dirección</label
+          >
+          <label class="chip"
+            ><input type="checkbox" name="turnado_otro_check" value="si" />
+            Otro</label
+          >
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3) Registró</legend>
+        <div class="inline">
+          <label class="chip"
+            ><input type="radio" name="registro_por" value="Verónica" />
+            Verónica</label
+          >
+          <label class="chip"
+            ><input type="radio" name="registro_por" value="Diana" />
+            Diana</label
+          >
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4) Trámite que procede</legend>
+        <div class="grid">
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="atencion_urgente"
+              />
+              Para su atención urgente</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="preparar_respuesta_firma_directora"
+              />
+              Preparar respuesta para firma de la Directora</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="para_asistencia"
+              />
+              Para su asistencia</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="atencion_seguimiento"
+              />
+              Para su atención y seguimiento correspondiente</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="aplicacion_cumplimiento"
+              />
+              Para su aplicación y cumplimiento</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="estudio_analisis_opinion"
+              />
+              Para su estudio, análisis y opinión</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="para_conocimiento"
+              />
+              Para su conocimiento</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input type="checkbox" name="tramite[]" value="para_difusion" />
+              Para su difusión</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="enterado_archivar_turnado"
+              />
+              Enterado, archivar turnado</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input type="checkbox" name="tramite[]" value="agendar" />
+              Agendar</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="tratar_con_directora"
+              />
+              Para tratar con la Directora</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="atencion_cumplimiento"
+              />
+              Para su atención y cumplimiento</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input
+                type="checkbox"
+                name="tramite[]"
+                value="dar_seguimiento_informar_direccion"
+              />
+              Dar seguimiento e informar a la Dirección</label
+            >
+          </div>
+          <div class="col-6">
+            <label class="chip"
+              ><input type="checkbox" name="tramite[]" value="tramite_otro" />
+              Otro</label
+            >
+          </div>
+          <div class="col-12">
+            <label for="recibe_turnado">Recibe turnado y/o anexo</label>
+            <textarea id="recibe_turnado" name="recibe_turnado"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5) Revisión</legend>
+        <div class="grid">
+          <div class="col-12">
+            <label for="asunto_sintetico">Asunto sintético</label>
+            <textarea
+              id="asunto_sintetico"
+              name="asunto_sintetico"
+              required
+            ></textarea>
+          </div>
+          <div class="col-3">
+            <label class="chip"
+              ><input type="checkbox" name="revisado_directora" value="si" />
+              Revisado por la Directora</label
+            >
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="reset" class="secondary">Limpiar</button>
+        <button id="export-xlsx-btn" type="button" class="secondary">
+          Exportar Excel
+        </button>
+        <button type="submit">Guardar</button>
+      </div>
+    </form>
+
+    <div
+      id="toast-stack"
+      class="toast-stack"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <!-- Script del cliente de Supabase como ESM -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.10/+esm";
+
+      // --- Config ---
+      const SUPABASE_URL = "https://edrtujoaipvzzopwkmsq.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkcnR1am9haXB2enpvcHdrbXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1Njc1NjUsImV4cCI6MjA3MTE0MzU2NX0.7-kAv8qv0eiwYGipXwo5aPw3kKjhFPoaPFiomY7n4oE";
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const draftKey = "turnados_form_draft_v1";
+
+      // --- Utils UI ---
+      // Toast minimalista con colores tipo Bootstrap (sin dependencias)
+      const toast = (msg, type = "info", { delay = 3500 } = {}) => {
+        const stack =
+          document.getElementById("toast-stack") ||
+          (() => {
+            const n = document.createElement("div");
+            n.id = "toast-stack";
+            n.className = "toast-stack";
+            document.body.appendChild(n);
+            return n;
+          })();
+
+        const cls =
+          {
+            success: "toast--success",
+            error: "toast--danger",
+            warn: "toast--warning",
+            info: "toast--info",
+            primary: "toast--primary",
+          }[type] || "toast--info";
+
+        const el = document.createElement("div");
+        el.className = `toast ${cls}`;
+        el.setAttribute("role", "status");
+        el.setAttribute("aria-live", "polite");
+        el.innerHTML = `
+    <div class="toast__bar"></div>
+    <div class="toast__body">${msg}</div>
+    <button class="toast__close" title="Cerrar" aria-label="Cerrar">×</button>
+  `;
+
+        const remove = () => {
+          el.style.animation = "toast-out .15s ease-in forwards";
+          setTimeout(() => el.remove(), 160);
+        };
+
+        el.querySelector(".toast__close").addEventListener("click", remove);
+        stack.appendChild(el);
+
+        let timer = setTimeout(remove, delay);
+        el.addEventListener("mouseenter", () => clearTimeout(timer));
+        el.addEventListener("mouseleave", () => {
+          timer = setTimeout(remove, 1200);
+        });
+      };
+
+      function onResetClear() {
+        // Quita todo checked en checkboxes y radios
+        form
+          .querySelectorAll('input[type="checkbox"], input[type="radio"]')
+          .forEach((i) => {
+            i.checked = false;
+          });
+        // Limpia textos/áreas (reset ya lo hace, pero reforzamos)
+        form
+          .querySelectorAll('input[type="text"], input[type="date"], textarea')
+          .forEach((i) => {
+            i.value = "";
+          });
+        // Borra borrador local
+        localStorage.removeItem(draftKey);
+        toast("Formulario limpio.", "info");
+      }
+
+      function formatDateDMY(val) {
+        if (!val) return "";
+        // admisible: 'YYYY-MM-DD' o ISO
+        const d = new Date(val);
+        if (Number.isNaN(d.getTime())) {
+          // si viene 'YYYY-MM-DD' como string, formatear manual
+          const m = String(val).match(/^(\d{4})-(\d{2})-(\d{2})/);
+          if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+          return String(val);
+        }
+        const dd = String(d.getDate()).padStart(2, "0");
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const yyyy = d.getFullYear();
+        return `${dd}/${mm}/${yyyy}`;
+      }
+      function formatDateTimeDMYHM(val) {
+        if (!val) return "";
+        const d = new Date(val);
+        if (Number.isNaN(d.getTime())) return String(val);
+        const ddmmyyyy = formatDateDMY(d);
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mi = String(d.getMinutes()).padStart(2, "0");
+        return `${ddmmyyyy} ${hh}:${mi}`;
+      }
+
+      // Espera a que carguen las libs UMD (defer asegura orden, pero reforzamos)
+      const ensureLibs = () => {
+        if (!window.XLSX)
+          throw new Error("XLSX no cargó (revisa la red o CDN)");
+      };
+
+      function fileTimestamp() {
+        const d = new Date();                // hora local (tu equipo)
+        const pad = n => String(n).padStart(2, "0");
+        const yyyy = d.getFullYear();
+        const mm   = pad(d.getMonth() + 1);
+        const dd   = pad(d.getDate());
+        const hh   = pad(d.getHours());
+        const mi   = pad(d.getMinutes());
+        const ss   = pad(d.getSeconds());
+        // Evitamos ":" en el nombre (Windows no lo permite)
+        return `${yyyy}-${mm}-${dd}_${hh}-${mi}-${ss}`;
+      }
+
+
+      // Helpers de acceso al formulario (tras DOMContentLoaded)
+      let form, exportPdfBtn, exportXlsxBtn;
+      document.addEventListener("DOMContentLoaded", () => {
+        form = document.querySelector("form");
+        exportPdfBtn = document.getElementById("export-pdf-btn");
+        exportXlsxBtn = document.getElementById("export-xlsx-btn");
+        bindListeners();
+      });
+
+      const getRadio = (name) =>
+        form.querySelector(`input[name="${name}"]:checked`)?.value ?? null;
+      const getBooleanRadio = (name) => {
+        const v = getRadio(name);
+        return v === null ? null : v === "si";
+      };
+      const getBooleanCheck = (name) => {
+        const el = form.querySelector(`input[name="${name}"]`);
+        return el ? !!el.checked : null;
+      };
+      const getText = (id) =>
+        form.querySelector(`#${id}`)?.value?.trim() || null;
+      const getDate = (id) => getText(id) || null;
+      const getChecksArray = (name) =>
+        Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(
+          (i) => i.value
+        );
+
+      function buildPayloadFromForm() {
+        return {
+          turnado: getText("turnado"),
+          fecha_documento: getDate("fecha_documento"),
+          fecha_recepcion: getDate("fecha_recepcion"),
+          referencia: getText("referencia"),
+          anexos: getText("anexos"),
+          clasificacion: getText("clasificacion"),
+          parte_clasificada: getText("parte_clasificada"),
+          fundamento_legal: getText("fundamento_legal"),
+          area_dependencia: getText("area_dependencia"),
+          enviado_por: getText("enviado_por"),
+          instruccion_email: getBooleanRadio("instruccion_email"),
+          se_turno_el_dia: getDate("se_turno_el_dia"),
+          comentarios: getText("comentarios"),
+          turnado_direccion: getChecksArray("turnado_direccion[]"),
+          turnado_subacademica: getChecksArray("turnado_subacademica[]"),
+          turnado_posgrado: getChecksArray("turnado_posgrado[]"),
+          turnado_sseis: getChecksArray("turnado_sseis[]"),
+          turnado_admin: getChecksArray("turnado_admin[]"),
+          apoyo_direccion: getBooleanCheck("apoyo_direccion"),
+          turnado_otro_check: getBooleanCheck("turnado_otro_check"),
+          registro_por: getRadio("registro_por"),
+          tramite: getChecksArray("tramite[]"),
+          recibe_turnado: getText("recibe_turnado"),
+          asunto_sintetico: getText("asunto_sintetico"),
+          revisado_directora: getBooleanCheck("revisado_directora"),
+        };
+      }
+
+      function tieneAlMenosUnTurnadoA(payload) {
+        const total =
+          (payload.turnado_direccion?.length || 0) +
+          (payload.turnado_subacademica?.length || 0) +
+          (payload.turnado_posgrado?.length || 0) +
+          (payload.turnado_sseis?.length || 0) +
+          (payload.turnado_admin?.length || 0) +
+          (payload.apoyo_direccion ? 1 : 0) +
+          (payload.turnado_otro_check ? 1 : 0);
+        return total > 0;
+      }
+
+      const CAMPOS_A_REVISAR = [
+        "fecha_recepcion",
+        "referencia",
+        "anexos",
+        "clasificacion",
+        "parte_clasificada",
+        "fundamento_legal",
+        "area_dependencia",
+        "enviado_por",
+        "instruccion_email",
+        "se_turno_el_dia",
+        "comentarios",
+        "turnado_direccion",
+        "turnado_subacademica",
+        "turnado_posgrado",
+        "turnado_sseis",
+        "turnado_admin",
+        "apoyo_direccion",
+        "turnado_otro_check",
+        "registro_por",
+        "tramite",
+        "recibe_turnado",
+        "revisado_directora",
+      ];
+      function camposFaltantesRow(row) {
+        const faltantes = [];
+        const isEmpty = (v) =>
+          v == null || v === "" || (Array.isArray(v) && v.length === 0);
+        if (!tieneAlMenosUnTurnadoA(row)) faltantes.push("turnado_a");
+        for (const k of CAMPOS_A_REVISAR) {
+          if (isEmpty(row[k])) faltantes.push(k);
+        }
+        return faltantes;
+      }
+
+      // ACTUALIZA estas funciones en tu código:
+      const bool2str = (b) => (b === true ? "Sí" : b === false ? "No" : "");
+      const date2str = (d) => formatDateDMY(d);
+      const arr2str = (a) => (Array.isArray(a) ? a.join("; ") : "");
+      function mapRowForExport(r) {
+        const faltantes = camposFaltantesRow(r);
+        return {
+          id: r.id ?? "",
+          created_at: formatDateTimeDMYHM(r.created_at),
+          turnado: r.turnado ?? "",
+          fecha_documento: date2str(r.fecha_documento),
+          fecha_recepcion: date2str(r.fecha_recepcion),
+          referencia: r.referencia ?? "",
+          anexos: r.anexos ?? "",
+          clasificacion: r.clasificacion ?? "",
+          parte_clasificada: r.parte_clasificada ?? "",
+          fundamento_legal: r.fundamento_legal ?? "",
+          area_dependencia: r.area_dependencia ?? "",
+          enviado_por: r.enviado_por ?? "",
+          instruccion_email: bool2str(r.instruccion_email),
+          se_turno_el_dia: date2str(r.se_turno_el_dia),
+          comentarios: r.comentarios ?? "",
+          turnado_direccion: arr2str(r.turnado_direccion),
+          turnado_subacademica: arr2str(r.turnado_subacademica),
+          turnado_posgrado: arr2str(r.turnado_posgrado),
+          turnado_sseis: arr2str(r.turnado_sseis),
+          turnado_admin: arr2str(r.turnado_admin),
+          apoyo_direccion: bool2str(r.apoyo_direccion),
+          turnado_otro_check: bool2str(r.turnado_otro_check),
+          registro_por: r.registro_por ?? "",
+          tramite: arr2str(r.tramite),
+          recibe_turnado: r.recibe_turnado ?? "",
+          asunto_sintetico: r.asunto_sintetico ?? "",
+          revisado_directora: bool2str(r.revisado_directora),
+          campos_faltantes: faltantes.join(", "),
+        };
+      }
+
+      async function fetchAllRows() {
+        const { data, error } = await supabase
+          .from("turnados")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        return data || [];
+      }
+
+      const hasMeaningfulDraft = (d) =>
+        !!(
+          d.turnado ||
+          d.asunto_sintetico ||
+          d.turnado_direccion?.length ||
+          d.turnado_subacademica?.length ||
+          d.turnado_posgrado?.length ||
+          d.turnado_sseis?.length ||
+          d.turnado_admin?.length ||
+          d.apoyo_direccion ||
+          d.turnado_otro_check
+        );
+      const rowFromDraft = (d) =>
+        mapRowForExport({ id: "BORRADOR", created_at: "(local)", ...d });
+
+      async function exportXLSX() {
+        try {
+          ensureLibs();
+          toast("Generando Excel...", "info");
+
+          const rows = await fetchAllRows(); // sólo BD
+          if (!rows.length) {
+            toast("No hay registros en la base de datos.", "warn");
+            return;
+          }
+
+          // Mapeo y omitir 'id'
+          const exportRows = rows.map(mapRowForExport).map((r) => {
+            const { id, ...rest } = r;
+            return rest;
+          });
+
+          const ws = window.XLSX.utils.json_to_sheet(exportRows);
+          ws["!cols"] = Object.keys(exportRows[0]).map((k) => ({
+            wch: Math.min(Math.max(k.length, 18), 40),
+          }));
+
+          const wb = window.XLSX.utils.book_new();
+          window.XLSX.utils.book_append_sheet(wb, ws, "Turnados");
+          const fileName = `turnados_${fileTimestamp()}.xlsx`;
+          window.XLSX.writeFile(wb, fileName);
+          toast("Excel descargado", "success");
+        } catch (e) {
+          console.error(e);
+          toast("No se pudo generar el Excel: " + e.message, "error");
+        }
+      }
+
+      // Guardado
+      let submitting = false;
+      async function handleSubmit(e) {
+        e.preventDefault();
+        if (submitting) return;
+        submitting = true;
+        const payload = buildPayloadFromForm();
+        const required = [
+          ["turnado", payload.turnado],
+          ["fecha_documento", payload.fecha_documento],
+          ["asunto_sintetico", payload.asunto_sintetico],
+        ];
+        const missingRequired = required.filter(([_, v]) => !v).map(([k]) => k);
+        if (!tieneAlMenosUnTurnadoA(payload))
+          missingRequired.push("turnado_a (al menos un dato)");
+        if (missingRequired.length) {
+          toast(
+            "Faltan campos obligatorios: " + missingRequired.join(", "),
+            "warn"
+          );
+          submitting = false;
+          return;
+        }
+        try {
+          const { data, error } = await supabase
+            .from("turnados")
+            .insert(payload)
+            .select()
+            .single();
+          if (error) throw error;
+          const faltantes = camposFaltantesRow(data);
+          toast(
+            `¡Guardado! Folio: ${String(data.id).slice(0, 8)}${
+              faltantes.length ? " — Faltantes: " + faltantes.join(", ") : ""
+            }`,
+            faltantes.length ? "warn" : "success"
+          );
+
+          // limpia y borra borrador
+          form.reset();
+          localStorage.removeItem(draftKey);
+
+          // descarga Excel actualizado
+          await exportXLSX();
+        } catch (err) {
+          console.error("Error al guardar:", err);
+          toast(
+            "No se pudo guardar: " + (err.message || "ver consola"),
+            "error"
+          );
+        } finally {
+          submitting = false;
+        }
+      }
+
+      function bindListeners() {
+        form?.addEventListener("submit", handleSubmit);
+        exportXlsxBtn?.addEventListener("click", exportXLSX);
+        // Borrador local
+        const draftKey = "turnados_form_draft_v1";
+        form?.addEventListener("input", () => {
+          const draft = new FormData(form);
+          const obj = {};
+          draft.forEach((v, k) => {
+            if (obj[k])
+              obj[k] = Array.isArray(obj[k]) ? [...obj[k], v] : [obj[k], v];
+            else obj[k] = v;
+          });
+          localStorage.setItem(draftKey, JSON.stringify(obj));
+        });
+        const raw = localStorage.getItem(draftKey);
+        if (raw) {
+          try {
+            const obj = JSON.parse(raw);
+            for (const [k, v] of Object.entries(obj)) {
+              if (Array.isArray(v)) {
+                v.forEach((val) => {
+                  const el = form.querySelector(
+                    `input[name="${k}"][value="${val}"]`
+                  );
+                  if (el) el.checked = true;
+                });
+                continue;
+              }
+              const radio = form.querySelector(
+                `input[type="radio"][name="${k}"][value="${v}"]`
+              );
+              if (radio) {
+                radio.checked = true;
+                continue;
+              }
+              const check = form.querySelector(
+                `input[type="checkbox"][name="${k}"]`
+              );
+              if (check) {
+                check.checked = v === "on" || v === true;
+                continue;
+              }
+              const byId = form.querySelector(`#${k}`);
+              if (byId) byId.value = v;
+            }
+          } catch {
+            /* ignore */
+          }
+        }
+        form?.addEventListener("reset", (e) => {
+          // Espera a que el reset aplique y luego limpia
+          setTimeout(onResetClear, 0);
+        });
+      }
+
+      // Captura errores globales para depurar rápido
+      window.addEventListener("error", (ev) => {
+        console.error(ev.error || ev.message);
+        toast("Error: " + (ev.error?.message || ev.message), "error");
+      });
+      window.addEventListener("unhandledrejection", (ev) => {
+        console.error(ev.reason);
+        toast(
+          "Promesa rechazada: " + (ev.reason?.message || ev.reason),
+          "error"
+        );
+      });
+    </script>
+  </body>
+</html>
